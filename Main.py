@@ -59,17 +59,16 @@ def main():
         my_image.paste(im=img_background_set, box=(0, 0),
                        mask=img_background_set)  # 배경 Draw
 
-        my_image.paste(im=img_walking1, box=tuple(
-            my_character.charPos-25), mask=img_walking1)  # 캐릭터 처음 그림
-        joystick.disp.image(my_image)
-
         # 캐릭터 walking animation
-        if (tmp % 6 == 1 or tmp % 6 == 2 or tmp % 6 == 3) and command['move'] == True:
+        if (tmp % 4 == 1 or tmp % 4 == 2) and command['move'] == False and IsDancing == False:
             my_image.paste(im=animation_walking[0], box=tuple(
                 my_character.charPos-25), mask=animation_walking[0])
-        else:
+        elif (tmp % 4 == 0 or tmp % 4 == 3) and command['move'] == False and IsDancing == False:
             my_image.paste(im=animation_walking[1], box=tuple(
                 my_character.charPos-25), mask=animation_walking[1])
+        elif IsDancing == False:
+            my_image.paste(im=img_walking1, box=tuple(
+                my_character.charPos-25), mask=img_walking1)  # 캐릭터 처음 그림
 
         # 캐릭터 dancing animation
         if (tmp % 7 == 0 or tmp % 7 == 1) and IsDancing == True:
@@ -89,31 +88,39 @@ def main():
         if not joystick.button_U.value:  # up pressed
             command['up_pressed'] = True
             command['move'] = True
-            joystick.disp.image(my_image)
+            my_character.check_character_position()
 
         if not joystick.button_D.value:  # down pressed
             command['down_pressed'] = True
             command['move'] = True
-            joystick.disp.image(my_image)
+            my_character.check_character_position()
 
         if not joystick.button_L.value:  # left pressed
             command['left_pressed'] = True
             command['move'] = True
-            joystick.disp.image(my_image)
+            my_character.check_character_position()
 
         if not joystick.button_R.value:  # right pressed
             command['right_pressed'] = True
             command['move'] = True
-            joystick.disp.image(my_image)
+            my_character.check_character_position()
 
         my_character.move(command)  # 캐릭터 무브 함수에 커맨드를 넣어줌
 
         # A pressed = Dance
         if not joystick.button_A.value and joystick.button_B.value == True:
             IsDancing = True
-            joystick.disp.image(my_image)
+        else:
+            IsDancing = False
 
-        tmp = tmp + 1
+        # B pressed = Dance
+        if joystick.button_A.value == True and not joystick.button_B.value:
+            IsDancing = True
+        else:
+            IsDancing = False
+
+        joystick.disp.image(my_image)
+        tmp += 1
 
 
 if __name__ == '__main__':
