@@ -15,10 +15,10 @@ class Character:
             self.charPos[0] = 240
 
         # Y 위치가 화면을 벗어나는지 체크
-        if self.charPos[1] - 25 < 0:  # 화면 위쪽을 벗어남
-            self.charPos[1] = 25
-        elif self.charPos[1] > 240:  # 화면 아래쪽을 벗어남
-            self.charPos[1] = 240
+        if self.charPos[1] - 75 < 0:  # 화면 위쪽을 벗어남
+            self.charPos[1] = 75
+        elif self.charPos[1] > 235:  # 화면 아래쪽을 벗어남
+            self.charPos[1] = 235
 
         return self.charPos
 
@@ -30,13 +30,13 @@ class Character:
             self.state = 'move'
 
             if command['up_pressed']:
-                self.charPos[1] -= 10
+                self.charPos[1] -= 5
 
             if command['down_pressed']:
-                self.charPos[1] += 10
+                self.charPos[1] += 5
 
             if command['left_pressed']:
-                self.charPos[0] -= 10
+                self.charPos[0] -= 5
 
             if command['right_pressed']:
-                self.charPos[0] += 10
+                self.charPos[0] += 5
