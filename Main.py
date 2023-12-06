@@ -50,6 +50,10 @@ def main():
         '/home/kau-esw/DancingInTheClassLight/Asset/fail.png', mode='r').convert('RGBA')  # 게임오버 화면
     img_fail2 = Image.open(
         '/home/kau-esw/DancingInTheClassLight/Asset/fail2.png', mode='r').convert('RGBA')  # 게임오버 교수님 화면
+    img_clear = Image.open(
+        '/home/kau-esw/DancingInTheClassLight/Asset/clear2.png', mode='r').convert('RGBA')  # 클리어 화면
+    img_clear2 = Image.open(
+        '/home/kau-esw/DancingInTheClassLight/Asset/clear.png', mode='r').convert('RGBA')  # 클리어 화면 - 댄싱퀸
 
     def Start():  # 시작 화면
 
@@ -67,25 +71,34 @@ def main():
             my_image.paste(im=img_fail, box=(0, 0),
                            mask=img_fail)  # 실패 화면 Draw
             joystick.disp.image(my_image)
-            # 게임 진행하면서 수정된 값들 초기화
-            my_character.danceGage = 185
-            my_character.charPos[0] = 120
-            my_character.charPos[1] = 120
-            my_character.gameover = False
-            my_character.IsDancing = False
-            my_character.IsStudying = False
-            my_character.IsTurning = False
-            my_character.turnFrame = 0
-            my_character.IsEumTime = False
-            my_character.professorTime = 0
-            my_character.firstSpon = 0
+            Initialize()
             if not joystick.button_A.value:
                 break
 
     def Clear():  # 클리어 화면
+        my_image.paste(im=img_clear, box=(0, 0), mask=img_clear)
+        joystick.disp.image(my_image)
+        time.sleep(2)
         while True:
-            my_image.paste(im=img_start, box=(0, 0), mask=img_start)
+            my_image.paste(im=img_clear2, box=(0, 0), mask=img_clear2)
             joystick.disp.image(my_image)
+            Initialize()
+            if not joystick.button_A.value:
+                break
+
+    def Initialize():
+        # 게임 진행하면서 수정된 값들 초기화
+        my_character.danceGage = 185
+        my_character.charPos[0] = 120
+        my_character.charPos[1] = 120
+        my_character.gameover = False
+        my_character.IsDancing = False
+        my_character.IsStudying = False
+        my_character.IsTurning = False
+        my_character.turnFrame = 0
+        my_character.IsEumTime = False
+        my_character.professorTime = 0
+        my_character.firstSpon = 0
 
     Start()  # 메인 화면 시작
 
@@ -156,7 +169,6 @@ def main():
             collision = False
             my_character.firstSpon = 0
 
-        print(my_character.charPos, my_eum.spawnPos, collision)
         # 교수님 돌리기
         if my_character.professorTime > random_number and count < 10:
             my_character.IsTurning = True
